@@ -1,0 +1,11 @@
+DECLARE @PageNumber INT = 2;
+DECLARE @RowsPerPage INT = 50;
+
+SELECT 
+    OrderID, 
+    OrderDate, 
+    TotalAmount
+FROM Orders
+ORDER BY OrderDate DESC -- An ORDER BY clause is required for pagination
+OFFSET (@PageNumber - 1) * @RowsPerPage ROWS
+FETCH NEXT @RowsPerPage ROWS ONLY;
