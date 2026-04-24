@@ -1,0 +1,15 @@
+-- Create a Common Table Expression (CTE) to assign a row number to each record
+WITH CTE AS (
+    SELECT 
+        EmployeeID,
+        FirstName,
+        LastName,
+        Email,
+        ROW_NUMBER() OVER (
+            PARTITION BY Email -- The columns that define a "duplicate"
+            ORDER BY EmployeeID DESC -- Keep the latest/highest ID
+        ) as row_num
+    FROM Employees
+)
+-- To just VIEW the duplicates, change DELETE to SELECT *
+DELETE FROM CTE WHERE row_num > 1;
